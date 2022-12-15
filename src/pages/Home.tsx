@@ -9,15 +9,25 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const _task = {
+      id: new Date().getTime(),
+      title: newTaskTitle,
+      done: false,
+    };
+    setTasks((auxTasks) => [...auxTasks, _task]);
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    const updtTasks = tasks.map((x) => ({ ...x }));
+    const result = updtTasks.find((x) => x.id === id);
+    if (!result) return;
+    result.done = !result.done;
+    setTasks(updtTasks);
   }
 
   function handleRemoveTask(id: number) {
-    //TODO - remove task from state
+    const result = tasks.filter((x) => x.id !== id);
+    setTasks(result);
   }
 
   return (
@@ -26,18 +36,14 @@ export function Home() {
 
       <TodoInput addTask={handleAddTask} />
 
-      <TasksList 
-        tasks={tasks} 
-        toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
-      />
+      <TasksList tasks={tasks} toggleTaskDone={handleToggleTaskDone} removeTask={handleRemoveTask} />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EBEBEB'
-  }
-})
+    backgroundColor: '#EBEBEB',
+  },
+});
